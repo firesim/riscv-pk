@@ -90,11 +90,15 @@ case "${BUILD_32BIT}" in
 	echo "Building 32-bit pk"
 	CFLAGS="$default_CFLAGS -m32"
 	LDFLAGS="-m32"
+	#CFLAGS="$default_CFLAGS -march=rv32imafdc -mabi=ilp32d"
+	#LDFLAGS="-march=rv32imafdc -mabi=ilp32d"
 	install_subdir="riscv32-unknown-elf"
 	;;
   *)
 	CFLAGS="$default_CFLAGS"
 	LDFLAGS=
+	#CFLAGS="$default_CFLAGS -march=rv64imafdc -mabi=lp64d"
+	#LDFLAGS="-march=rv64imafdc -mabi=lp64d"
 	install_subdir="riscv64-unknown-elf"
 	;;
 esac
@@ -116,7 +120,7 @@ AC_SUBST(install_subdir)
 # The '*' suffix indicates an optional subproject. The '**' suffix
 # indicates an optional subproject which is also the name of a group.
 
-MCPPBS_SUBPROJECTS([ pk, bbl, softfloat, dummy_payload, machine, util ])
+MCPPBS_SUBPROJECTS([ pk, sm, softfloat, dummy_payload, machine, util ])
 
 #-------------------------------------------------------------------------
 # MCPPBS subproject groups

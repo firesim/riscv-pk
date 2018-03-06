@@ -3,5 +3,5 @@
   .section .rodata
   .globl logo
 logo:
-  .incbin BBL_LOGO_FILE
+  .incbin SM_LOGO_FILE
   .byte 0

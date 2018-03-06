@@ -5,5 +5,5 @@
 
   .globl _payload_start, _payload_end
 _payload_start:
-  .incbin BBL_PAYLOAD
+  .incbin SM_PAYLOAD
 _payload_end:

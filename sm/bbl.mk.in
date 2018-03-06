@@ -1,0 +1,30 @@
+sm_subproject_deps = \
+	util \
+  softfloat \
+  machine \
+  dummy_payload \
+
+sm_hdrs = \
+  sm.h \
+
+sm_c_srcs = \
+  logo.c \
+
+sm_asm_srcs = \
+  payload.S \
+  raw_logo.S \
+
+payload.o: sm_payload
+
+sm_payload: $(SM_PAYLOAD)
+	if $(READELF) -h $< 2> /dev/null > /dev/null; then $(OBJCOPY) -O binary $< $@; else cp $< $@; fi
+
+raw_logo.o: sm_logo_file
+
+sm_logo_file: @SM_LOGO_FILE@
+	cat $^ | sed 's/$$/\r/' > $@
+
+sm_test_srcs =
+
+sm_install_prog_srcs = \
+  sm.c \

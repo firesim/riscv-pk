@@ -1,7 +1,7 @@
 // See LICENSE for license details.
 
-#ifndef _BBL_H
-#define _BBL_H
+#ifndef _SM_H
+#define _SM_H
 
 #ifndef __ASSEMBLER__
 
