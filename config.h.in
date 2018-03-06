@@ -1,7 +1,7 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
 /* Define if subproject MCPPBS_SPROJ_NORM is enabled */
-#undef BBL_ENABLED
+#undef SM_ENABLED
 
 /* Define if subproject MCPPBS_SPROJ_NORM is enabled */
 #undef DUMMY_PAYLOAD_ENABLED

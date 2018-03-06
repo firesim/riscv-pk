@@ -10,7 +10,7 @@ designed to support tethered RISC-V implementations with limited I/O
 capability and and thus handles I/O-related system calls by proxying them to
 a host computer.
 
-This package also contains the Berkeley Boot Loader, `bbl`, which is a
+This package also contains the Berkeley Boot Loader, `sm`, which is a
 supervisor execution environment for tethered RISC-V systems.  It is
 designed to host the RISC-V Linux port.
 
@@ -31,7 +31,7 @@ directory is not supported; you need to use a separate build directory.
 Alternatively, the GNU/Linux toolchain may be used to build this package,
 by setting `--host=riscv64-unknown-linux-gnu`.
 
-By default, 64-bit (RV64) versions of `pk` and `bbl` are built.  To
+By default, 64-bit (RV64) versions of `pk` and `sm` are built.  To
 built 32-bit (RV32) versions, supply a `--enable-32bit` flag to the
 configure command.
 

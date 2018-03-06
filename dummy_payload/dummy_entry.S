@@ -18,5 +18,5 @@ _start:
 
   .data
 str:
-  .asciz "This is bbl's dummy_payload.  To boot a real kernel, reconfigure\n\
-bbl with the flag --with-payload=PATH, then rebuild bbl.\n"
+  .asciz "This is sm's dummy_payload.  To boot a real kernel, reconfigure\n\
+sm with the flag --with-payload=PATH, then rebuild sm.\n"
