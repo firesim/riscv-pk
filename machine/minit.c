@@ -17,6 +17,8 @@ volatile uint64_t* mtime;
 volatile uint32_t* plic_priorities;
 size_t plic_ndevs;
 
+#define EVENT_SET_BITS 8
+
 static void mstatus_init()
 {
   // Enable FPU
@@ -34,6 +36,23 @@ static void mstatus_init()
   // Disable paging
   if (supports_extension('S'))
     write_csr(sptbr, 0);
+  // Wire up events
+  write_csr(mhpmevent3,   (1 << (1 + EVENT_SET_BITS)) + 0); // loads
+  write_csr(mhpmevent4,   (1 << (2 + EVENT_SET_BITS)) + 0); // stores
+
+  write_csr(mhpmevent5,   (1 << (0 + EVENT_SET_BITS)) + 2); //("I$ miss", () => io.imem.perf.acquire),
+  write_csr(mhpmevent6,   (1 << (1 + EVENT_SET_BITS)) + 2); //("D$ miss", () => io.dmem.perf.acquire),
+  write_csr(mhpmevent7,   (1 << (2 + EVENT_SET_BITS)) + 2); //("D$ release", () => io.dmem.perf.release),
+  write_csr(mhpmevent8,   (1 << (3 + EVENT_SET_BITS)) + 2); //("ITLB miss", () => io.imem.perf.tlbMiss),
+  write_csr(mhpmevent9,   (1 << (4 + EVENT_SET_BITS)) + 2); //("DTLB miss", () => io.dmem.perf.tlbMiss),
+  write_csr(mhpmevent10,  (1 << (5 + EVENT_SET_BITS)) + 2); //("L2 TLB miss", () => io.ptw.perf.l2miss)))))
+
+  write_csr(mhpmevent11,  (1 << (6 + EVENT_SET_BITS)) + 0); // branches
+  write_csr(mhpmevent12,  (1 << (5 + EVENT_SET_BITS)) + 1); // branches misprediction
+
+  write_csr(mhpmevent13,  (1 << (0 + EVENT_SET_BITS)) + 1); // load-use interlock
+  write_csr(mhpmevent14,  (1 << (3 + EVENT_SET_BITS)) + 1); // icache blocked
+  write_csr(mhpmevent15,  (1 << (4 + EVENT_SET_BITS)) + 1); // dcache blocked
 }
 
 // send S-mode interrupts and most exceptions straight to S-mode
