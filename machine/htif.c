@@ -5,6 +5,7 @@
 #include "mtrap.h"
 #include "fdt.h"
 #include "syscall.h"
+#include "hpm.h"
 #include <string.h>
 
 extern uint64_t __htif_base;
@@ -68,6 +69,11 @@ int htif_console_getchar()
 
 static void do_tohost_fromhost(uintptr_t dev, uintptr_t cmd, uintptr_t data)
 {
+  struct hpm pre, post;
+  int i;
+
+  hpm_read(&pre);
+
   spinlock_lock(&htif_lock);
     __set_tohost(dev, cmd, data);
 
@@ -82,6 +88,11 @@ static void do_tohost_fromhost(uintptr_t dev, uintptr_t cmd, uintptr_t data)
       }
     }
   spinlock_unlock(&htif_lock);
+
+  hpm_read(&post);
+  for (i = 0; i < HPM_NCOUNTERS; i++) {
+    hpm_off.data[i] += (post.data[i] - pre.data[i]);
+  }
 }
 
 void htif_syscall(uintptr_t arg)

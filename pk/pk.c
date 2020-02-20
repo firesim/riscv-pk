@@ -6,6 +6,7 @@
 #include "elf.h"
 #include "mtrap.h"
 #include "frontend.h"
+#include "hpm.h"
 #include <stdbool.h>
 
 elf_info current;
@@ -162,6 +163,7 @@ static void run_loaded_program(size_t argc, char** argv, uintptr_t kstack_top)
   init_tf(&tf, current.entry, stack_top);
   __clear_cache(0, 0);
   write_csr(sscratch, kstack_top);
+  hpm_read(&hpm_off);
   start_user(&tf);
 }
 

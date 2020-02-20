@@ -10,6 +10,7 @@
 #include "finisher.h"
 #include "disabled_hart_mask.h"
 #include "htif.h"
+#include "hpm.h"
 #include <string.h>
 #include <limits.h>
 
@@ -230,6 +231,8 @@ void enter_supervisor_mode(void (*fn)(uintptr_t), uintptr_t arg0, uintptr_t arg1
   *p_fcsr = 0;
 #endif
   write_csr(mepc, fn);
+
+  hpm_init();
 
   register uintptr_t a0 asm ("a0") = arg0;
   register uintptr_t a1 asm ("a1") = arg1;

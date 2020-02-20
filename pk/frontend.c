@@ -6,6 +6,7 @@
 #include "syscall.h"
 #include "htif.h"
 #include <stdint.h>
+#include "hpm.h"
 
 long frontend_syscall(long n, uint64_t a0, uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6)
 {
@@ -31,8 +32,42 @@ long frontend_syscall(long n, uint64_t a0, uint64_t a1, uint64_t a2, uint64_t a3
   return ret;
 }
 
+/* Dump performance counter data for application */
+static inline void hpm_print(void)
+{
+  static const char *label[] = {
+    "cycles",
+    "instret",
+    "loads",
+    "stores",
+    "I$ miss",
+    "D$ miss",
+    "D$ release",
+    "ITLB miss",
+    "DTLB miss",
+    "L2 TLB miss",
+    "branches",
+    "mispredicts",
+    "load-use interlock",
+    "I$ blocked",
+    "D$ blocked",
+  };
+  _Static_assert((sizeof(label) / sizeof(char *)) == HPM_NCOUNTERS);
+  struct hpm hpm;
+  int i;
+
+  hpm_read(&hpm);
+
+  for (i = 0; i < HPM_NCOUNTERS; i++) {
+    if (hpm.data[i] != 0) {
+      printk("pk: %s: %lld\n", label[i], hpm.data[i] - hpm_off.data[i]);
+    }
+  }
+}
+
 void shutdown(int code)
 {
+  hpm_print();
   frontend_syscall(SYS_exit, code, 0, 0, 0, 0, 0, 0);
   while (1);
 }
