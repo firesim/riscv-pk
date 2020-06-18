@@ -3,6 +3,7 @@
   .section ".text.init"
   .globl _start
 _start:
+  bnez a0, hang
   la s0, str
 1:
   lbu a0, (s0)
@@ -15,6 +16,10 @@ _start:
 1:
   li a7, SBI_SHUTDOWN
   ecall
+
+hang:
+  wfi
+  j hang
 
   .data
 str:
