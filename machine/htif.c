@@ -108,10 +108,11 @@ void htif_console_putchar(uint8_t ch)
 
 void htif_poweroff()
 {
+  spinlock_lock(&htif_lock);
   while (1) {
-    fromhost = 0;
-    tohost = 1;
+    __set_tohost(0, 0, 1);
   }
+  spinlock_unlock(&htif_lock);
 }
 
 struct htif_scan
